@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, FlatList, Image, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, TextInput, TouchableWithoutFeedback, StyleSheet, Dimensions, FlatList, ScrollView, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 const shows_first = [
     {
         key: 1,
@@ -374,98 +375,112 @@ const shows_first = [
     }
 ]
 
-const shows_second = [
-    {
-        key: 7,
-        name: 'Colony',
-        image: 'https://static.tvmaze.com/uploads/images/medium_portrait/91/229234.jpg'
-    },
-    {
-        key: 8,
-        name: 'The Walking Dead',
-        image: 'https://static.tvmaze.com/uploads/images/medium_portrait/67/168817.jpg'
-    },
-    {
-        key: 9,
-        name: 'Taken',
-        image: 'https://static.tvmaze.com/uploads/images/medium_portrait/100/250528.jpg'
-    },
-    {
-        key: 10,
-        name: 'This is us',
-        image: 'https://static.tvmaze.com/uploads/images/medium_portrait/70/175831.jpg'
-    },
-    {
-        key: 11,
-        name: 'Superstore',
-        image: 'https://static.tvmaze.com/uploads/images/medium_portrait/69/174909.jpg'
-    },
-    {
-        key: 12,
-        name: 'Lethal Weapon',
-        image: 'https://static.tvmaze.com/uploads/images/medium_portrait/93/234808.jpg'
-    },
-    {
-        key: 13,
-        name: 'The 100',
-        image: 'https://static.tvmaze.com/uploads/images/medium_portrait/94/236401.jpg'
-    },
-    {
-        key: 14,
-        name: 'Homeland',
-        image: 'https://static.tvmaze.com/uploads/images/medium_portrait/101/254425.jpg'
+const { width, height } = Dimensions.get('window');
+
+class Search extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            text: '',
+            data: ''
+        }
     }
-]
-
-class List extends Component {
-
-    newPushContent(item) {
-        this.props.navigator.push({
-            ident: 'Details',
-            passProps: {
-                item
-            }
+    filter(text) {
+        const newData = shows_first.filter(function (item) {
+            const itemData = item.name.toUpperCase();
+            const textData = text.toUpperCase();
+            return itemData.indexOf(textData > -1);
+        })
+        this.setState({
+            data: newData,
+            text: text,
         })
     }
-
+    deleteData() {
+        this.setState({
+            text: '',
+            data: ''
+        })
+    }
     _renderItem(item) {
         return (
-            <TouchableWithoutFeedback onPress={() => this.newPushContent({ item })}>
-                <Image style={{ width: 120, height: 180 }} source={{ uri: item.image }} />
-            </TouchableWithoutFeedback>
-
+            <Image key={item.key} style={styles.image} source={{ uri: item.image }} />
         )
     }
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
-                <View>
-                    <Text style={styles.texto}>My List</Text>
-                    <FlatList
-                        horizontal
-                        ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
-                        renderItem={({ item }) => this._renderItem(item)}
-                        data={shows_first} />
+            <View style={styles.contenedor}>
+                <View style={styles.header}>
+                    <Icon name="search" color="grey" size={20} style={styles.searchIcon} />
+                    <TextInput value={this.state.text} onChangeText={(text) => this.filter(text)} style={styles.input} placeholder="Search" placeholderTextColor="grey" keyboardAppearance="dark" autoFocus />
+                    {this.state.text ? <TouchableWithoutFeedback onPress={() => this.deleteData()}><Icon name="times-circle" color="grey" size={18} style={styles.iconInputClose} /></TouchableWithoutFeedback> : null}
+                    <TouchableWithoutFeedback style={styles.cancelButon} onPress={() => this.props.navigator.pop()}>
+                        <View style={styles.containerButon}>
+                            <Text style={styles.cancelButonText} >Cancel</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
-
-                <View>
-                    <Text style={styles.texto}>Tops Picks For Your</Text>
+                <ScrollView>
                     <FlatList
-                        horizontal
-                        ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
+                        style={{ marginHorizontal: 5 }}
+                        data={this.state.data}
+                        columnWrapperStyle={{ marginTop: 10, marginLeft: 10, }}
+                        numColumns={3}
                         renderItem={({ item }) => this._renderItem(item)}
-                        data={shows_second} />
-                </View>
+                    />
+                </ScrollView>
             </View>
-        )
+        );
     }
 }
 
 const styles = StyleSheet.create({
-    texto: {
-        color: 'white',
-        fontSize: 15
+    contenedor: {
+        flex: 1,
+        backgroundColor: '#181818'
+    },
+    header: {
+        height: 50,
+        backgroundColor: '#181818',
+        borderBottomWidth: 1,
+        borderColor: '#3a3a3a',
+        paddingBottom: 5,
+        marginTop: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        position: 'relative'
+    },
+    searchIcon: {
+        position: 'absolute',
+        top: 12,
+        left: 15,
+        zIndex: 1,
+        backgroundColor: 'transparent'
+    },
+    iconInputClose: {
+        position: 'absolute',
+        top: 12,
+        right: 150,
+        backgroundColor: 'transparent',
+        zIndex: 1
+    },
+    input: {
+        width: width - (width / 4),
+        height: 40,
+        backgroundColor: '#323232',
+        marginHorizontal: 10,
+        paddingLeft: 30,
+        borderRadius: 3
+    },
+    cancelButonText: {
+        color: 'white'
+    },
+    image: {
+        marginRight: 5,
+        width: width / 3,
+        height: height / 3
     }
 })
-export default List;
+
+export default Search;
