@@ -6,9 +6,10 @@ import TabsEpisodes from './TabsEpisodes'
 const { width, heigth } = Dimensions.get('window')
 class Details extends Component {
     render() {
+        const { episodes } = this.props.item.item.details
         const { name } = this.props.item.item;
         const { thumbnail, cast, description, year, creator, numOfEpisodes, season } = this.props.item.item.details;
-        console.log(this.props.item.item);
+        // console.log(episodes);
         return (
             <ScrollView style={styles.container}>
                 <ImageBackground style={styles.thumbnail} source={{ uri: thumbnail }}>
@@ -44,7 +45,7 @@ class Details extends Component {
                         </View>
                     </View>
                 </View>
-                <TabsEpisodes />
+                <TabsEpisodes data={episodes} />
             </ScrollView>
         )
     }
