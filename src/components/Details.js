@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ImageBackground, TouchableHighlight, TouchableW
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import TabsEpisodes from './TabsEpisodes'
+import LinearGradient from 'react-native-linear-gradient';
 const { width, heigth } = Dimensions.get('window')
 class Details extends Component {
     render() {
@@ -18,6 +19,11 @@ class Details extends Component {
                             <Icon style={styles.iconPlay} name="play-circle" size={90} color="white" />
                         </View>
                     </TouchableWithoutFeedback>
+                    <View style={styles.nameContainer}>
+                        <LinearGradient colors={['transparent', '#181818', '#181818']} >
+                            <Text style={[styles.text, styles.titleShow]}>{name}</Text>
+                        </LinearGradient>
+                    </View>
                 </ImageBackground>
                 <View style={styles.descriptionContainer}>
                     <View style={[styles.subtitle, styles.subtitleText]}>
@@ -52,6 +58,15 @@ class Details extends Component {
 }
 
 const styles = StyleSheet.create({
+    nameContainer: {
+        backgroundColor: 'transparent'
+    },
+    titleShow: {
+        fontSize: 35,
+        paddingLeft: 10,
+        marginBottom: 10,
+        color: 'white'
+    },
     container: {
         flex: 1,
         backgroundColor: "#181818"
