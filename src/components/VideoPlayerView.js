@@ -8,12 +8,16 @@ class VideoPlayerView extends Component {
     componentWillMount() {
         Orientation.lockToLandscape();
     }
+    _back() {
+        Orientation.lockToPortrait();
+        this.props.navigator.pop();
+    }
     render() {
         return (
             <View style={styles.container}>
                 <VideoPlayer source={require('../videos/video.mp4')}
-                    title={"Designated Survivor"}
-                    onBack={() => null}
+                    title={this.props.title}
+                    onBack={() => this._back()}
                 />
             </View>
         )

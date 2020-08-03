@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, FlatList, Image, TouchableWithoutFeedback } from 'react-native';
+import Orientation from 'react-native-orientation'
 import PropTypes from 'prop-types'
 const shows_first = [
     {
@@ -419,6 +420,9 @@ const shows_second = [
 ]
 
 class List extends Component {
+    componentWillMount() {
+        Orientation.lockToPortrait();
+    }
 
     newPushContent(item) {
         this.props.navigator.push({

@@ -5,8 +5,22 @@ import IonIcons from 'react-native-vector-icons/Ionicons'
 import TabsEpisodes from './TabsEpisodes'
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types'
+import Orientation from 'react-native-orientation'
 const { width, heigth } = Dimensions.get('window')
 class Details extends Component {
+    componentWillMount() {
+        Orientation.lockToPortrait();
+    }
+    openVideo() {
+        const { name } = this.props.item.item;
+        Orientation.lockToLandscape();
+        this.props.navigator.push({
+            ident: 'Video',
+            passProps: {
+                title: name
+            }
+        })
+    }
     render() {
         const { episodes } = this.props.item.item.details
         const { name } = this.props.item.item;
@@ -15,7 +29,7 @@ class Details extends Component {
         return (
             <ScrollView style={styles.container}>
                 <ImageBackground style={styles.thumbnail} source={{ uri: thumbnail }}>
-                    <TouchableWithoutFeedback onPress={null}>
+                    <TouchableWithoutFeedback onPress={() => this.openVideo()}>
                         <View style={styles.bottonPlay}>
                             <Icon style={styles.iconPlay} name="play-circle" size={90} color="white" />
                         </View>
@@ -53,7 +67,7 @@ class Details extends Component {
                     </View>
                 </View>
                 <TabsEpisodes data={episodes} />
-            </ScrollView>
+            </ScrollView >
         )
     }
 }

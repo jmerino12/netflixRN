@@ -89,7 +89,7 @@ class IndexApp extends Component {
     render() {
         return (
             <Navigator
-                initialRoute={{ ident: 'Video' }}
+                initialRoute={{ ident: 'App' }}
                 renderScene={this._renderScener}
                 configureScene={this._configureScene}
             />
