@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view';
 import Episodes from './Episodes';
 import Trailers from './Trailers';
+import PropTypes from 'prop-types'
 
 class TabsEpisodes extends Component {
     constructor(props) {

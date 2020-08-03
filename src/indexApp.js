@@ -7,6 +7,7 @@ import Search from './components/Search'
 import Details from './components/Details';
 import { Text, View } from 'react-native';
 import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator';
+import Video from './components/VideoPlayerView'
 
 
 const noTransition = {
@@ -37,6 +38,10 @@ class IndexApp extends Component {
                 return (
                     <Details  {...navigator}{...route.passProps} />
                 )
+            case 'Video':
+                return (
+                    <Video  {...navigator}{...route.passProps} />
+                )
 
         }
     }
@@ -63,6 +68,17 @@ class IndexApp extends Component {
                         out: buildStyleInterpolator(noTransition),
                     },
                 }
+            case 'Video':
+                return {
+                    ...Navigator.SceneConfigs.FloatFromLeft,
+                    gestures: null,
+                    defaultTransitionVelocity: 100,
+                    animationInterpolators: {
+                        into: buildStyleInterpolator(noTransition),
+                        out: buildStyleInterpolator(noTransition),
+                    },
+                }
+
 
 
             default:
@@ -73,7 +89,7 @@ class IndexApp extends Component {
     render() {
         return (
             <Navigator
-                initialRoute={{ ident: 'App' }}
+                initialRoute={{ ident: 'Video' }}
                 renderScene={this._renderScener}
                 configureScene={this._configureScene}
             />

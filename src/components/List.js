@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, FlatList, Image, TouchableWithoutFeedback } from 'react-native';
+import PropTypes from 'prop-types'
 const shows_first = [
     {
         key: 1,

@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import TabsEpisodes from './TabsEpisodes'
 import LinearGradient from 'react-native-linear-gradient';
+import PropTypes from 'prop-types'
 const { width, heigth } = Dimensions.get('window')
 class Details extends Component {
     render() {

@@ -5,6 +5,7 @@ import {
     Image,
     Dimensions
 } from 'react-native'
+import PropTypes from 'prop-types'
 
 import Swiper from 'react-native-swiper'
 

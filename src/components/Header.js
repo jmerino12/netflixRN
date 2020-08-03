@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
-
+import PropTypes from 'prop-types'
 const Header = (props) => {
     return (
         <View style={styles.container} >

@@ -9,7 +9,7 @@ import Slide from './src/components/Slider';
 import Header from './src/components/Header'
 import Menu from './src/components/Menu';
 
-
+import PropTypes from 'prop-types'
 class App extends Component {
   constructor(props) {
     super(props)

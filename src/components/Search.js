@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableWithoutFeedback, StyleSheet, Dimensions, FlatList, ScrollView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PropTypes from 'prop-types'
 const shows_first = [
     {
         key: 1,

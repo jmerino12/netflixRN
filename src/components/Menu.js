@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Dimensions, StyleSheet, View, Text, Image, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IonIcons from 'react-native-vector-icons/Ionicons'
-
+import PropTypes from 'prop-types'
 const { width, heigth } = Dimensions.get('window');
 
 class Menu extends Component {
