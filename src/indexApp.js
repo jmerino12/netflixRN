@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import {
     Navigator
@@ -8,93 +9,23 @@ import Details from './components/Details';
 import { Text, View } from 'react-native';
 import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator';
 import Video from './components/VideoPlayerView'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+const Stack = createStackNavigator();
 
-
-const noTransition = {
-    opacity: {
-        from: 1,
-        to: 1,
-        min: 1,
-        max: 1,
-        type: 'linear',
-        extrapolate: false,
-        round: 100
-    }
-}
-
-class IndexApp extends Component {
-    _renderScener(route, navigator) {
-        var navigator = { navigator }
-        switch (route.ident) {
-            case 'App':
-                return (
-                    <App {...navigator} />
-                )
-            case 'Search':
-                return (
-                    <Search  {...navigator} />
-                )
-            case 'Details':
-                return (
-                    <Details  {...navigator}{...route.passProps} />
-                )
-            case 'Video':
-                return (
-                    <Video  {...navigator}{...route.passProps} />
-                )
-
-        }
-    }
-
-    _configureScene(route, routeStack) {
-        switch (route.ident) {
-            case 'Search':
-                return {
-                    ...Navigator.SceneConfigs.FloatFromLeft,
-                    gestures: null,
-                    defaultTransitionVelocity: 100,
-                    animationInterpolators: {
-                        into: buildStyleInterpolator(noTransition),
-                        out: buildStyleInterpolator(noTransition),
-                    },
-                }
-            case 'Details':
-                return {
-                    ...Navigator.SceneConfigs.FloatFromLeft,
-                    gestures: null,
-                    defaultTransitionVelocity: 100,
-                    animationInterpolators: {
-                        into: buildStyleInterpolator(noTransition),
-                        out: buildStyleInterpolator(noTransition),
-                    },
-                }
-            case 'Video':
-                return {
-                    ...Navigator.SceneConfigs.FloatFromLeft,
-                    gestures: null,
-                    defaultTransitionVelocity: 100,
-                    animationInterpolators: {
-                        into: buildStyleInterpolator(noTransition),
-                        out: buildStyleInterpolator(noTransition),
-                    },
-                }
-
-
-
-            default:
-                break;
-        }
-    }
-
-    render() {
-        return (
-            <Navigator
-                initialRoute={{ ident: 'App' }}
-                renderScene={this._renderScener}
-                configureScene={this._configureScene}
-            />
-        )
-    }
+function IndexApp() {
+    return (
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Home" screenOptions={{
+                headerShown: false
+            }}>
+                <Stack.Screen name="Home" component={App} />
+                <Stack.Screen name="Details" component={Details} />
+                <Stack.Screen name="Search" component={Search} />
+                <Stack.Screen name="Video" component={Video} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 }
 
 export default IndexApp;

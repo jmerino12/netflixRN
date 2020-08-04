@@ -31,9 +31,9 @@ class App extends Component {
       <View style={{ flex: 1 }}>
         <SideMenu menu={<Menu />} isOpen={this.state.isOpen} onChange={(isOpen) => this.updateMenu(isOpen)} style={{ flex: 1 }}>
           <View style={[{ flex: 1 }, style.contenedor]}>
-            <Header toggle={this.toggle.bind(this)} style={{ flex: 1 }} navigator={this.props.navigator} />
+            <Header navigation={this.props.navigation} toggle={this.toggle.bind(this)} style={{ flex: 1 }} />
             <Slide />
-            <List navigator={this.props.navigator} />
+            <List navigation={this.props.navigation} />
           </View>
 
         </SideMenu>

@@ -3,13 +3,14 @@ import { Text, View, StyleSheet, TouchableWithoutFeedback, Image } from 'react-n
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
 const Header = (props) => {
+    const { navigate } = props.navigation;
     return (
         <View style={styles.container} >
             <TouchableWithoutFeedback onPress={() => props.toggle()} >
                 <Icon name="bars" color="white" size={25} />
             </TouchableWithoutFeedback>
             <Image source={require('../images/Netflix-logo.png')} style={styles.logo} />
-            <TouchableWithoutFeedback onPress={() => (props.navigator.push({ ident: 'Search' }))}>
+            <TouchableWithoutFeedback onPress={() => (navigate('Search'))}>
                 <Icon name="search"
                     color="white"
                     size={25} />

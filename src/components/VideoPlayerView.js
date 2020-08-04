@@ -9,8 +9,9 @@ class VideoPlayerView extends Component {
         Orientation.lockToLandscape();
     }
     _back() {
+        const { goBack } = this.props.navigation;
         Orientation.lockToPortrait();
-        this.props.navigator.pop();
+        goBack();
     }
     render() {
         return (

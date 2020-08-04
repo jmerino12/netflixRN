@@ -21,16 +21,6 @@ class Details extends Component {
     componentWillMount() {
         Orientation.lockToPortrait();
     }
-    openVideo() {
-        const { name } = this.props.item.item;
-        Orientation.lockToLandscape();
-        this.props.navigator.push({
-            ident: 'Video',
-            passProps: {
-                title: name
-            }
-        })
-    }
     onShare() {
         Share.share({
             title: 'Designated Survivor',
@@ -57,9 +47,12 @@ class Details extends Component {
         }
     }
     render() {
-        const { episodes } = this.props.item.item.details
-        const { name } = this.props.item.item;
-        const { thumbnail, cast, description, year, creator, numOfEpisodes, season } = this.props.item.item.details;
+        const { navigate } = this.props.navigation;
+        const { params } = this.props.route;
+        //console.log(params)
+        const { episodes } = params.item.details
+        const { name } = params.item;
+        const { thumbnail, cast, description, year, creator, numOfEpisodes, season } = params.item.details;
         // console.log(episodes);
         return (
             <View style={{ flex: 1 }}>
@@ -68,7 +61,7 @@ class Details extends Component {
                 </Animatable.View> : null}
                 <ScrollView style={styles.container} onScroll={this.handleScroll.bind(this)}>
                     <ImageBackground style={styles.thumbnail} source={{ uri: thumbnail }}>
-                        <TouchableWithoutFeedback onPress={() => this.openVideo()}>
+                        <TouchableWithoutFeedback onPress={() => navigate('Video', { name: name })}>
                             <View style={styles.bottonPlay}>
                                 <Icon style={styles.iconPlay} name="play-circle" size={90} color="white" />
                             </View>
