@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ImageBackground, TouchableHighlight, TouchableWithoutFeedback, ScrollView, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, ImageBackground, TouchableHighlight, TouchableWithoutFeedback, ScrollView, Dimensions, Share } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IonIcons from 'react-native-vector-icons/Ionicons'
 import TabsEpisodes from './TabsEpisodes'
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types'
 import Orientation from 'react-native-orientation'
+import * as Animatable from 'react-native-animatable';
+
 const { width, heigth } = Dimensions.get('window')
 class Details extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            measures: 0,
+            header: false,
+            animation: ''
+        }
+    }
     componentWillMount() {
         Orientation.lockToPortrait();
     }
@@ -21,58 +31,109 @@ class Details extends Component {
             }
         })
     }
+    onShare() {
+        Share.share({
+            title: 'Designated Survivor',
+            url: 'www.youtube.com',
+            message: 'Awesome Tv Show'
+        }, {
+            dialogTitle: 'Share this awesome content',
+            excludedActivityTypes: [
+                'com.apple.UIKit.activity.PostToTwitter'
+            ]
+
+        })
+    }
+    handleScroll(event) {
+        if (event.nativeEvent.contentOffset.y > this.state.measures) {
+            this.setState({
+                header: true,
+                animation: 'slideInDown'
+            })
+        } else {
+            this.setState({
+                header: false
+            })
+        }
+    }
     render() {
         const { episodes } = this.props.item.item.details
         const { name } = this.props.item.item;
         const { thumbnail, cast, description, year, creator, numOfEpisodes, season } = this.props.item.item.details;
         // console.log(episodes);
         return (
-            <ScrollView style={styles.container}>
-                <ImageBackground style={styles.thumbnail} source={{ uri: thumbnail }}>
-                    <TouchableWithoutFeedback onPress={() => this.openVideo()}>
-                        <View style={styles.bottonPlay}>
-                            <Icon style={styles.iconPlay} name="play-circle" size={90} color="white" />
+            <View style={{ flex: 1 }}>
+                {this.state.header ? <Animatable.View animation={this.state.animation} style={styles.header}>
+                    <Text style={styles.headerText}>{name}</Text>
+                </Animatable.View> : null}
+                <ScrollView style={styles.container} onScroll={this.handleScroll.bind(this)}>
+                    <ImageBackground style={styles.thumbnail} source={{ uri: thumbnail }}>
+                        <TouchableWithoutFeedback onPress={() => this.openVideo()}>
+                            <View style={styles.bottonPlay}>
+                                <Icon style={styles.iconPlay} name="play-circle" size={90} color="white" />
+                            </View>
+                        </TouchableWithoutFeedback>
+                        <View style={styles.nameContainer} onLayout={({ nativeEvent }) => {
+                            this.setState({
+                                measures: nativeEvent.layout.y
+                            })
+                        }} >
+
+                            <LinearGradient colors={['transparent', '#181818', '#181818']} >
+                                <Text style={[styles.text, styles.titleShow]}>{name}</Text>
+                            </LinearGradient>
                         </View>
-                    </TouchableWithoutFeedback>
-                    <View style={styles.nameContainer}>
-                        <LinearGradient colors={['transparent', '#181818', '#181818']} >
-                            <Text style={[styles.text, styles.titleShow]}>{name}</Text>
-                        </LinearGradient>
-                    </View>
-                </ImageBackground>
-                <View style={styles.descriptionContainer}>
-                    <View style={[styles.subtitle, styles.subtitleText]}>
-                        <Text style={[styles.text, styles.subtitleText]} >{year}</Text>
-                        <Text style={[styles.text, styles.subtitleText]}>{numOfEpisodes}</Text>
-                        <Text style={[styles.text, styles.subtitleText]}>{season} Season</Text>
-                    </View>
-                    <View style={styles.description}>
-                        <Text style={[styles.text, styles.ligth]}>{description}</Text>
-                    </View>
-                    <Text style={[styles.text, styles.subtitleText]}>Cast: {cast}</Text>
-                    <Text style={[styles.text, styles.subtitleText]}>Creator: {creator}</Text>
-                    <View style={styles.shareListIcons}>
-                        <View style={styles.myListIcon}>
-                            <IonIcons name="md-checkmark" color="grey" size={25} style={styles.listIcon} />
-                            <Text style={styles.text}>My List</Text>
+                    </ImageBackground>
+                    <View style={styles.descriptionContainer}>
+                        <View style={[styles.subtitle, styles.subtitleText]}>
+                            <Text style={[styles.text, styles.subtitleText]} >{year}</Text>
+                            <Text style={[styles.text, styles.subtitleText]}>{numOfEpisodes}</Text>
+                            <Text style={[styles.text, styles.subtitleText]}>{season} Season</Text>
                         </View>
-                        <View style={styles.myShareIcon}>
-                            <Icon style={styles.shareIcon}
-                                name="share-alt"
-                                color="grey"
-                                size={25}
-                            />
-                            <Text style={styles.text}>Share</Text>
+                        <View style={styles.description}>
+                            <Text style={[styles.text, styles.ligth]}>{description}</Text>
+                        </View>
+                        <Text style={[styles.text, styles.subtitleText]}>Cast: {cast}</Text>
+                        <Text style={[styles.text, styles.subtitleText]}>Creator: {creator}</Text>
+                        <View style={styles.shareListIcons}>
+                            <View style={styles.myListIcon}>
+                                <IonIcons name="md-checkmark" color="grey" size={25} style={styles.listIcon} />
+                                <Text style={styles.text}>My List</Text>
+                            </View>
+                            <TouchableHighlight onPress={this.onShare}>
+                                <View style={styles.myShareIcon}>
+                                    <Icon style={styles.shareIcon}
+                                        name="share-alt"
+                                        color="grey"
+                                        size={25}
+                                    />
+                                    <Text style={styles.text}>Share</Text>
+                                </View>
+                            </TouchableHighlight>
                         </View>
                     </View>
-                </View>
-                <TabsEpisodes data={episodes} />
-            </ScrollView >
+                    <TabsEpisodes data={episodes} />
+                </ScrollView >
+            </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    header: {
+        backgroundColor: '#181818',
+        paddingVertical: 10,
+        alignItems: 'center',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1
+    },
+    headerText: {
+        color: 'white',
+        fontSize: 20
+    },
     nameContainer: {
         backgroundColor: 'transparent'
     },
