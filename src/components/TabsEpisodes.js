@@ -31,6 +31,10 @@ class TabsEpisodes extends Component {
         switch (route.key) {
             case '1':
                 return <Episodes data={this.props.data}
+                    seasons={this.props.seasons}
+                    getSeason={this.props.getSeason}
+                    navigation={this.props.navigation}
+                    currentSeason={this.props.currentSeason}
                 />
             case '2':
                 return <Trailers />

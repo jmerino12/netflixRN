@@ -5,7 +5,10 @@ import PropTypes from 'prop-types'
 
 class Episodes extends Component {
     renderEpisodes() {
-        const rest = this.props.data.map((item, i) => {
+        const { currentSeason } = this.props
+        return this.props.data.filter(function (element) {
+            return element.season == currentSeason
+        }).map((item, i) => {
             const img = item.image == null ? 'https://static.tvmaze.com/uploads/images/medium_landscape/76/190262.jpg' : item.image.medium;
             return (
                 <View style={styles.video} key={i} >
@@ -33,12 +36,33 @@ class Episodes extends Component {
                 </View>
             )
         })
-        return rest;
+
     }
     render() {
+        console.log(this.props)
+        const { navigate } = this.props.navigation
         return (
             <View style={styles.container}>
-                {this.renderEpisodes()}
+                {this.props.seasons == 1 ? <TouchableWithoutFeedback>
+                    <View>
+                        <Text style={styles.buttonText}>Season {this.props.currentSeason}</Text>
+                    </View>
+                </TouchableWithoutFeedback> : <TouchableWithoutFeedback onPress={() => navigate('EpisodesPicker',
+                    { getSeason: this.props.getSeason, seasons: this.props.seasons, currentSeason: this.props.currentSeason }
+                )}>
+                        <View style={styles.buttonWithIcon}>
+                            <Text style={styles.buttonText}>Season {this.props.currentSeason}</Text>
+                            <Icon
+                                style={styles.iconDown}
+                                name="chevron-down"
+                                color="white"
+                                size={10}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>}
+                <View style={styles.renderEpisodes}>
+                    {this.renderEpisodes()}
+                </View>
             </View>
         )
     }

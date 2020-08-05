@@ -16,6 +16,7 @@ class Details extends Component {
             measuresTitle: 0,
             measuresSeason: 0,
             scrollY: new Animated.Value(0),
+            currentSeason: 1
         }
     }
     componentWillMount() {
@@ -35,7 +36,14 @@ class Details extends Component {
         })
     }
 
+    getSeason(season) {
+        this.setState({
+            currentSeason: season
+        })
+    }
+
     render() {
+        // console.log(this.state.currentSeason)
         const headerNameToggle = this.state.scrollY.interpolate({
             inputRange: [this.state.measuresTitle, this.state.measuresTitle + 1],
             outputRange: [0, 1]
@@ -66,7 +74,10 @@ class Details extends Component {
                     <Text style={styles.headerText}>{name}</Text>
                 </Animated.View>
                 <Animated.View style={[styles.header, { opacity: headerSeasonToggle, transform: [{ translateY: 0 }, { translateX: headerSeasonHide }] }]}>
-                    <Text style={styles.headerText}>Season 1</Text>
+                    <TouchableHighlight onPress={() => navigate('EpisodesPicker', { getSeason: this.getSeason.bind(this), seasons: season, currentSeason: this.state.currentSeason })}>
+                        <Text style={styles.headerText}>Season {this.state.currentSeason}</Text>
+                    </TouchableHighlight>
+
                 </Animated.View>
                 < Animated.ScrollView style={styles.container} scrollEventThrottle={1}
                     onScroll={
@@ -125,8 +136,14 @@ class Details extends Component {
                             measuresSeason: nativeEvent.layout.y + 8
                         })
                     }}>
-                        <TabsEpisodes data={episodes} /
-                        ></View>
+                        <TabsEpisodes
+                            seasons={season}
+                            getSeason={this.getSeason.bind(this)}
+                            navigation={this.props.navigation}
+                            data={episodes}
+                            currentSeason={this.state.currentSeason}
+                        />
+                    </View>
 
                 </Animated.ScrollView >
             </View>
